@@ -159,14 +159,14 @@ class AccountService:
     @staticmethod
     def authenticate(email: str, password: str, invite_token: Optional[str] = None) -> Account:
         """authenticate account with email and password"""
-
+        # 查询数据库，查找对应邮箱的账号
         account = db.session.query(Account).filter_by(email=email).first()
         if not account:
             raise AccountNotFoundError()
 
         if account.status == AccountStatus.BANNED.value:
             raise AccountLoginError("Account is banned.")
-
+        # 如果提供了密码和邀请 token，且账号还未设置密码
         if password and invite_token and account.password is None:
             # if invite_token is valid, set password and password_salt
             salt = secrets.token_bytes(16)
@@ -175,10 +175,10 @@ class AccountService:
             base64_password_hashed = base64.b64encode(password_hashed).decode()
             account.password = base64_password_hashed
             account.password_salt = base64_salt
-
+        # 校验密码是否正确
         if account.password is None or not compare_password(password, account.password, account.password_salt):
             raise AccountPasswordError("Invalid email or password.")
-
+        # 如果账号状态为待激活，则激活账号并记录初始化时间
         if account.status == AccountStatus.PENDING.value:
             account.status = AccountStatus.ACTIVE.value
             account.initialized_at = naive_utc_now()

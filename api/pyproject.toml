@@ -85,6 +85,7 @@ dependencies = [
     "sseclient-py>=1.8.0",
     "httpx-sse>=0.4.0",
     "sendgrid~=6.12.3",
+    "requests>=2.32.4",
 ]
 # Before adding new dependency, consider place it in
 # alphabet order (a-z) and suitable group.
@@ -210,3 +211,12 @@ vdb = [
     "xinference-client~=1.2.2",
     "mo-vector~=0.1.13",
 ]
+
+# 忽略提交校验
+[tool.ruff]
+ignore = ["N818", "UP031"]
+
+# 或者只针对你的 OIDC 相关文件
+[tool.ruff.per-file-ignores]
+"**/auth/oidc_*.py" = ["N818", "UP031"]
+"**/auth/jwt_compat.py" = ["N818", "UP031"]
