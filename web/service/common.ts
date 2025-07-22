@@ -88,6 +88,10 @@ export const logout: Fetcher<CommonResponse, { url: string; params: Record<strin
   return get<CommonResponse>(url, params)
 }
 
+export const openIdLogin: Fetcher<CommonResponse, { url: string; params: Record<string, any> }> = ({ url, params }) => {
+    return get<CommonResponse>(url, params)
+}
+
 export const fetchLangGeniusVersion: Fetcher<LangGeniusVersionResponse, { url: string; params: Record<string, any> }> = ({ url, params }) => {
   return get<LangGeniusVersionResponse>(url, { params })
 }

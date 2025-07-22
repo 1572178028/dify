@@ -16,6 +16,8 @@ import json
 import uuid
 from hashlib import md5
 from urllib.parse import urlencode
+from services.account_service import AccountService, RegisterService, TenantService
+from libs.helper import email, extract_remote_ip
 
 import requests
 from flask import Flask, redirect, request, session
@@ -184,8 +186,9 @@ def finish():
     session['empno'] = userinfo.get('empno', '')
     session['dep'] = userinfo.get('dep', '')
     session['fullname'] = userinfo.get('fullname', '')
-
-    return redirect("/")
+    account = AccountService.authenticateOpenId(userinfo['email'],userinfo['nickname'])
+    token_pair = AccountService.login(account=account, ip_address=extract_remote_ip(request))
+    return redirect("http://localhost:3000/apps")
 
 
 if __name__ == "__main__":

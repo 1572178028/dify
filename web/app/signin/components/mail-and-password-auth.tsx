@@ -6,7 +6,7 @@ import { useContext } from 'use-context-selector'
 import Button from '@/app/components/base/button'
 import Toast from '@/app/components/base/toast'
 import { emailRegex } from '@/config'
-import { login } from '@/service/common'
+import {login, openIdLogin} from '@/service/common'
 import Input from '@/app/components/base/input'
 import I18NContext from '@/context/i18n'
 import { noop } from 'lodash-es'
@@ -104,6 +104,19 @@ export default function MailAndPasswordAuth({ isInvite, isEmailSetup, allowRegis
     }
   }
 
+  const handleOpenidLogin = async () => {
+    router.replace('/openid/login')
+    const res = await openIdLogin({
+      url: '/openid/login',
+      params: {},
+    })
+    if (res.result === 'success') {
+      router.replace('/apps')
+    } else {
+      router.replace('/')
+    }
+  }
+
   return <form onSubmit={noop}>
     <div className='mb-3'>
       <label htmlFor="email" className="system-md-semibold my-2 text-text-secondary">
@@ -167,8 +180,14 @@ export default function MailAndPasswordAuth({ isInvite, isEmailSetup, allowRegis
         variant='primary'
         onClick={handleEmailPasswordLogin}
         disabled={isLoading || !email || !password}
-        className="w-full"
+        className="w-1\/2"
       >{t('login.signBtn')}</Button>
+      <Button
+        tabIndex={2}
+        variant='primary'
+        onClick={handleOpenidLogin}
+        className="w-1\/2"
+      >OpenId Login</Button>
     </div>
   </form>
 }

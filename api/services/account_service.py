@@ -188,6 +188,26 @@ class AccountService:
         return cast(Account, account)
 
     @staticmethod
+    def authenticateOpenId(email: str, username: str) -> Account:
+        """authenticate account with email and password"""
+        # 查询数据库，查找对应邮箱的账号
+        account = db.session.query(Account).filter_by(email=email).first()
+        if not account:
+            raise AccountNotFoundError()
+
+        if account.status == AccountStatus.BANNED.value:
+            raise AccountLoginError("Account is banned.")
+
+        # 如果账号状态为待激活，则激活账号并记录初始化时间
+        if account.status == AccountStatus.PENDING.value:
+            account.status = AccountStatus.ACTIVE.value
+            account.initialized_at = naive_utc_now()
+
+        db.session.commit()
+
+        return cast(Account, account)
+
+    @staticmethod
     def update_account_password(account, password, new_password):
         """update account password"""
         if account.password and not compare_password(password, account.password, account.password_salt):
