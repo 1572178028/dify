@@ -1,12 +1,12 @@
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useContext } from 'use-context-selector'
 import Button from '@/app/components/base/button'
 import Toast from '@/app/components/base/toast'
 import { emailRegex } from '@/config'
-import {login, openIdLogin} from '@/service/common'
+import {login, openIdLogin,getUserMes} from '@/service/common'
 import Input from '@/app/components/base/input'
 import I18NContext from '@/context/i18n'
 import { noop } from 'lodash-es'
@@ -28,6 +28,8 @@ export default function MailAndPasswordAuth({ isInvite, isEmailSetup, allowRegis
   const emailFromLink = decodeURIComponent(searchParams.get('email') || '')
   const [email, setEmail] = useState(emailFromLink)
   const [password, setPassword] = useState('')
+  const consoleTokenFromLocalStorage = localStorage?.getItem('console_token')
+  const refreshTokenFromLocalStorage = localStorage?.getItem('refresh_token')
 
   const [isLoading, setIsLoading] = useState(false)
   const handleEmailPasswordLogin = async () => {
@@ -105,17 +107,40 @@ export default function MailAndPasswordAuth({ isInvite, isEmailSetup, allowRegis
   }
 
   const handleOpenidLogin = async () => {
-    router.replace('/openid/login')
     const res = await openIdLogin({
       url: '/openid/login',
       params: {},
     })
-    if (res.result === 'success') {
-      router.replace('/apps')
+    if (res && typeof res === 'string') {
+      console.log("/openid/login：" + res)
+      window.location.href = res as string
     } else {
       router.replace('/')
     }
   }
+
+  useEffect(() => {
+    // 立即执行的异步函数
+    (async () => {
+      if (consoleTokenFromLocalStorage && refreshTokenFromLocalStorage) {
+        try {
+          const res = await getUserMes({
+            url: '/openid/getUserMes',
+            params: {},
+          })
+
+          if (res.result === 'success') {
+            localStorage.setItem('console_token', res.data.access_token)
+            localStorage.setItem('refresh_token', res.data.refresh_token)
+            router.replace('/apps')
+          }
+        } catch (error) {
+          console.error('登录检查失败:', error)
+          router.replace('/login')
+        }
+      }
+    })()
+  }, [consoleTokenFromLocalStorage, refreshTokenFromLocalStorage, router])
 
   return <form onSubmit={noop}>
     <div className='mb-3'>

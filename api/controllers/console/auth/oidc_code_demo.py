@@ -16,12 +16,13 @@ import json
 import uuid
 from hashlib import md5
 from urllib.parse import urlencode
-from services.account_service import AccountService, RegisterService, TenantService
-from libs.helper import email, extract_remote_ip
 
 import requests
 from flask import Flask, redirect, request, session
 from jwt_compat import JWS, NoSuitableSigningKeys, SYMKey, load_jwks_from_url
+
+from libs.helper import extract_remote_ip
+from services.account_service import AccountService
 
 __revision__ = "0.01"
 __author__ = "chenxs@corp.netease.com"
@@ -212,7 +213,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     host = args.host or 'dify.miaode.com'
-    port = args.port or 5000
+    port = args.port or 5001
     OIDC_REDIRECT_URI = "http://%s:%s/finish" % (host, port)
     # OIDC_CLIENT_ID = args.client_id
     # OIDC_CLIENT_SECRET = args.client_secret

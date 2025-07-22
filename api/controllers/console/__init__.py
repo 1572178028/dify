@@ -70,7 +70,7 @@ from .app import (
 )
 
 # Import auth controllers
-from .auth import activate, data_source_bearer_auth, data_source_oauth, forgot_password, login, oauth,open_id_login
+from .auth import activate, data_source_bearer_auth, data_source_oauth, forgot_password, login, oauth, open_id_login,jwt_compat
 
 # Import billing controllers
 from .billing import billing, compliance

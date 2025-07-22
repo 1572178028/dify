@@ -1,18 +1,19 @@
 
 
-from flask_restful import Resource, reqparse
-from controllers.console import api
-from flask import redirect, request, session
 import datetime
 import json
 import uuid
 from hashlib import md5
 from urllib.parse import urlencode
-from services.account_service import AccountService
-from libs.helper import extract_remote_ip
 
 import requests
-from jwt_compat import JWS, NoSuitableSigningKeys, SYMKey, load_jwks_from_url
+from flask import redirect, request, session
+from flask_restful import Resource
+from controllers.console.auth.jwt_compat import JWS, NoSuitableSigningKeys, SYMKey, load_jwks_from_url
+
+from controllers.console import api
+from libs.helper import extract_remote_ip
+from services.account_service import AccountService
 
 # todo lgy 配置化关键信息
 OIDC_CLIENT_ID = "4c055a10660f11f09d5c0242ac120002"
@@ -22,7 +23,7 @@ OIDC_AUTHORIZATION_SERVER = "https://login.netease.com/connect/authorize"
 OIDC_TOKEN_ENDPOINT = "https://login.netease.com/connect/token"
 OIDC_USERINFO_ENDPOINT = "https://login.netease.com/connect/userinfo"
 OIDC_SCOPE = "openid nickname email fullname dep title empno"
-OIDC_REDIRECT_URI = "https://dify.miaode.com:5001/openid/finish"
+OIDC_REDIRECT_URI = "http://dify.miaode.com:5001/console/api/openid/finish"
 OIDC_JWKS_URI = "https://login.netease.com/connect/jwks"
 OIDC_ALG = "HS256"
 
@@ -49,7 +50,7 @@ class OpenidLoginApi(Resource):
         redirect_url = "?".join([
             OIDC_AUTHORIZATION_SERVER, urlencode(authn_request_params)])
 
-        return redirect(redirect_url)
+        return redirect_url
 
 
 def token_request(code):
@@ -156,9 +157,16 @@ class OpenidFinishApi(Resource):
         session['fullname'] = userinfo.get('fullname', '')
         account = AccountService.authenticateOpenId(userinfo['email'], userinfo['nickname'])
         token_pair = AccountService.login(account=account, ip_address=extract_remote_ip(request))
+        session['user_mes']  = token_pair.model_dump()
         return redirect("http://localhost:3000/apps")
 
 
+class GetUserMes(Resource):
+    def get(self):
+        user_data = session.get('user_mes')
+        print("user_data=", user_data)
+        return {"result": "success", "data": user_data}
 
 api.add_resource(OpenidLoginApi, "/openid/login")
 api.add_resource(OpenidFinishApi, "/openid/finish")
+api.add_resource(OpenidFinishApi, "/openid/getUserMes")
