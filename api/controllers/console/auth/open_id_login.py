@@ -4,14 +4,15 @@ import datetime
 import json
 import uuid
 from hashlib import md5
+from ipaddress import ip_address
 from urllib.parse import urlencode
 
 import requests
 from flask import redirect, request, session
 from flask_restful import Resource
-from controllers.console.auth.jwt_compat import JWS, NoSuitableSigningKeys, SYMKey, load_jwks_from_url
 
 from controllers.console import api
+from controllers.console.auth.jwt_compat import JWS, NoSuitableSigningKeys, SYMKey, load_jwks_from_url
 from libs.helper import extract_remote_ip
 from services.account_service import AccountService
 
@@ -155,10 +156,14 @@ class OpenidFinishApi(Resource):
         session['empno'] = userinfo.get('empno', '')
         session['dep'] = userinfo.get('dep', '')
         session['fullname'] = userinfo.get('fullname', '')
-        account = AccountService.authenticateOpenId(userinfo['email'], userinfo['nickname'])
+        account = AccountService.authenticateOpenId(userinfo['email'], userinfo['nickname'],extract_remote_ip(request))
+        print("account",account.__repr__)
         token_pair = AccountService.login(account=account, ip_address=extract_remote_ip(request))
-        session['user_mes']  = token_pair.model_dump()
-        return redirect("http://localhost:3000/apps")
+        data = token_pair.model_dump()
+        access_token = data.get('access_token')
+        refresh_token = data.get('refresh_token')
+        redirect_url = f"http://localhost:3000/signin?access_token={access_token}&refresh_token={refresh_token}"
+        return redirect(redirect_url)
 
 
 class GetUserMes(Resource):
@@ -169,4 +174,4 @@ class GetUserMes(Resource):
 
 api.add_resource(OpenidLoginApi, "/openid/login")
 api.add_resource(OpenidFinishApi, "/openid/finish")
-api.add_resource(OpenidFinishApi, "/openid/getUserMes")
+api.add_resource(GetUserMes, "/openid/getUserMes")

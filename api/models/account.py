@@ -146,6 +146,8 @@ class Account(UserMixin, Base):
         self.role = join.role
         self._current_tenant = tenant
 
+    def __repr__(self):
+        return f"<Account id={self.id} name={self.name} email={self.email}>"
     @property
     def current_role(self):
         return self.role

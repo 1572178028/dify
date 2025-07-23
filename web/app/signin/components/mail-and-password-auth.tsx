@@ -28,8 +28,6 @@ export default function MailAndPasswordAuth({ isInvite, isEmailSetup, allowRegis
   const emailFromLink = decodeURIComponent(searchParams.get('email') || '')
   const [email, setEmail] = useState(emailFromLink)
   const [password, setPassword] = useState('')
-  const consoleTokenFromLocalStorage = localStorage?.getItem('console_token')
-  const refreshTokenFromLocalStorage = localStorage?.getItem('refresh_token')
 
   const [isLoading, setIsLoading] = useState(false)
   const handleEmailPasswordLogin = async () => {
@@ -120,27 +118,18 @@ export default function MailAndPasswordAuth({ isInvite, isEmailSetup, allowRegis
   }
 
   useEffect(() => {
-    // 立即执行的异步函数
-    (async () => {
-      if (consoleTokenFromLocalStorage && refreshTokenFromLocalStorage) {
-        try {
-          const res = await getUserMes({
-            url: '/openid/getUserMes',
-            params: {},
-          })
+    const params = new URLSearchParams(window.location.search);
+    const accessToken = params.get('access_token');
+    const refreshToken = params.get('refresh_token');
+    if (accessToken && refreshToken) {
+      localStorage.setItem('console_token', accessToken);
+      localStorage.setItem('refresh_token', refreshToken);
+      // 跳转到 /apps
+      console.log("登录成功")
+      router.replace('/apps');
+    }
+  }, [router]);
 
-          if (res.result === 'success') {
-            localStorage.setItem('console_token', res.data.access_token)
-            localStorage.setItem('refresh_token', res.data.refresh_token)
-            router.replace('/apps')
-          }
-        } catch (error) {
-          console.error('登录检查失败:', error)
-          router.replace('/login')
-        }
-      }
-    })()
-  }, [consoleTokenFromLocalStorage, refreshTokenFromLocalStorage, router])
 
   return <form onSubmit={noop}>
     <div className='mb-3'>
@@ -205,13 +194,13 @@ export default function MailAndPasswordAuth({ isInvite, isEmailSetup, allowRegis
         variant='primary'
         onClick={handleEmailPasswordLogin}
         disabled={isLoading || !email || !password}
-        className="w-1\/2"
+        className="w-full mb-3"
       >{t('login.signBtn')}</Button>
       <Button
         tabIndex={2}
         variant='primary'
         onClick={handleOpenidLogin}
-        className="w-1\/2"
+        className="w-full"
       >OpenId Login</Button>
     </div>
   </form>

@@ -188,24 +188,44 @@ class AccountService:
         return cast(Account, account)
 
     @staticmethod
-    def authenticateOpenId(email: str, username: str) -> Account:
+    def authenticateOpenId(email: str, username: str, ip_address: str) -> Account:
         """authenticate account with email and password"""
         # 查询数据库，查找对应邮箱的账号
-        account = db.session.query(Account).filter_by(email=email).first()
-        if not account:
-            raise AccountNotFoundError()
+        try:
+            account = db.session.query(Account).filter_by(email=email).first()
+            if not account:
+                # 不存在则注册
+                account = AccountService.create_account(
+                    email=email,
+                    name=username,
+                    interface_language='zh-CN',
+                    password=username,
+                    is_setup=True,
+                )
+                account.last_login_ip = ip_address
+                account.initialized_at = naive_utc_now()
+                # todo lgy 修改配置
+                if account.email and account.email == "liguoyong@corp.netease.com":
+                    TenantService.create_owner_tenant_if_not_exist(account=account, is_setup=True)
+                else:
+                    # 关联默认的空间
+                    default_tenant_id = "2dc8a7ff-c64f-4d92-b119-4994fda7d1dd"
+                    tenant = db.session.query(Tenant).filter_by(id=default_tenant_id).first()
+                    TenantService.create_tenant_member(tenant, account)
 
-        if account.status == AccountStatus.BANNED.value:
-            raise AccountLoginError("Account is banned.")
+            if not account:
+                raise AccountNotFoundError()
+            if account.status == AccountStatus.BANNED.value:
+                raise AccountLoginError("Account is banned.")
+            # 如果账号状态为待激活，则激活账号并记录初始化时间
+            if account.status == AccountStatus.PENDING.value:
+                account.status = AccountStatus.ACTIVE.value
+                account.initialized_at = naive_utc_now()
+            db.session.commit()
+            return cast(Account, account)
+        except Exception as e:
+            raise ValueError(f"Setup failed: {e}")
 
-        # 如果账号状态为待激活，则激活账号并记录初始化时间
-        if account.status == AccountStatus.PENDING.value:
-            account.status = AccountStatus.ACTIVE.value
-            account.initialized_at = naive_utc_now()
-
-        db.session.commit()
-
-        return cast(Account, account)
 
     @staticmethod
     def update_account_password(account, password, new_password):
@@ -305,7 +325,7 @@ class AccountService:
             from controllers.console.auth.error import EmailCodeAccountDeletionRateLimitExceededError
 
             raise EmailCodeAccountDeletionRateLimitExceededError()
-
+        print("delete code==:", code)
         send_account_deletion_verification_code.delay(to=email, code=code)
 
         cls.email_code_account_deletion_rate_limiter.increment_rate_limit(email)

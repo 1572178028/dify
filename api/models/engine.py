@@ -22,4 +22,9 @@ metadata = MetaData(naming_convention=POSTGRES_INDEXES_NAMING_CONVENTION)
 # Directly importing `db` in other modules can make the code more difficult to read, test, and maintain.
 #
 # Whenever possible, avoid this pattern in new code.
+# 注意（QuantumGhost）：请避免在 controllers 包之外的模块中直接导入和使用 db。
+# 正确做法是在 controllers 包内导入 db，并将其作为参数传递给函数或类的构造方法。
+# 在其他模块中直接导入 db 会导致代码更难阅读、测试和维护。
+# 在新代码中，请尽量避免这种用法。
+
 db = SQLAlchemy(metadata=metadata)

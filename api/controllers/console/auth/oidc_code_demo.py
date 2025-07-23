@@ -187,9 +187,8 @@ def finish():
     session['empno'] = userinfo.get('empno', '')
     session['dep'] = userinfo.get('dep', '')
     session['fullname'] = userinfo.get('fullname', '')
-    account = AccountService.authenticateOpenId(userinfo['email'],userinfo['nickname'])
-    token_pair = AccountService.login(account=account, ip_address=extract_remote_ip(request))
-    return redirect("http://localhost:3000/apps")
+
+    return redirect("http://dify.miaode.com:5001")
 
 
 if __name__ == "__main__":
