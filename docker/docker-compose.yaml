@@ -533,7 +533,7 @@ services:
   api:
     # 本地构建
     build:
-      context: ./api
+      context: ../api
       dockerfile: Dockerfile
     #远程拉取
 #    image: langgenius/dify-api:1.6.0
@@ -568,7 +568,7 @@ services:
   worker:
     # 本地构建
     build:
-      context: ./api
+      context: ../api
       dockerfile: Dockerfile
     # 远程
 #    image: langgenius/dify-api:1.6.0
@@ -599,7 +599,7 @@ services:
   web:
     #本地
     build:
-      context: ./web
+      context: ../web
       dockerfile: Dockerfile
       #远程
 #    image: langgenius/dify-web:1.6.0
