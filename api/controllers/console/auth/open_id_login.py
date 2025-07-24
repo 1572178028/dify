@@ -24,7 +24,7 @@ OIDC_AUTHORIZATION_SERVER = "https://login.netease.com/connect/authorize"
 OIDC_TOKEN_ENDPOINT = "https://login.netease.com/connect/token"
 OIDC_USERINFO_ENDPOINT = "https://login.netease.com/connect/userinfo"
 OIDC_SCOPE = "openid nickname email fullname dep title empno"
-OIDC_REDIRECT_URI = "http://dify.miaode.com:5001/console/api/openid/finish"
+OIDC_REDIRECT_URI = "https://dify.miaode.com/console/api/openid/finish"
 OIDC_JWKS_URI = "https://login.netease.com/connect/jwks"
 OIDC_ALG = "HS256"
 
