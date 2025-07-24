@@ -15,5 +15,9 @@ class HostConfig(BaseSettings):
         description="dify web host",
         default="localhost",
     )
+    OIDC_REDIRECT_URI: Optional[str] = Field(
+        description="oidc",
+        default="localhost",
+    )
 
 
