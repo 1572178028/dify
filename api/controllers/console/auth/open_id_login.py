@@ -10,6 +10,7 @@ import requests
 from flask import redirect, request, session
 from flask_restful import Resource
 
+from configs import dify_config
 from controllers.console import api
 from controllers.console.auth.jwt_compat import JWS, NoSuitableSigningKeys, SYMKey, load_jwks_from_url
 from libs.helper import extract_remote_ip
@@ -161,7 +162,7 @@ class OpenidFinishApi(Resource):
         data = token_pair.model_dump()
         access_token = data.get('access_token')
         refresh_token = data.get('refresh_token')
-        redirect_url = f"http://localhost:3000/signin?access_token={access_token}&refresh_token={refresh_token}"
+        redirect_url = f"http://{dify_config.DIFY_WEB_HOST}/signin?access_token={access_token}&refresh_token={refresh_token}"
         return redirect(redirect_url)
 
 
