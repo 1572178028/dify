@@ -26,7 +26,7 @@ OIDC_USERINFO_ENDPOINT = "https://login.netease.com/connect/userinfo"
 OIDC_SCOPE = "openid nickname email fullname dep title empno"
 OIDC_JWKS_URI = "https://login.netease.com/connect/jwks"
 OIDC_ALG = "HS256"
-
+OIDC_REDIRECT_URI = dify_config.OIDC_REDIRECT_URI
 class OpenidLoginApi(Resource):
     def get(self):
         """AuthN Request"""
@@ -42,7 +42,7 @@ class OpenidLoginApi(Resource):
             'state': session['state'],
             'nonce': session['nonce'],
             'scope': OIDC_SCOPE,
-            'redirect_uri': dify_config.OIDC_REDIRECT_URI,
+            'redirect_uri': OIDC_REDIRECT_URI,
             # 'prompt': 'login',
             'display': 'touch',
         }
@@ -58,7 +58,7 @@ def token_request(code):
     params = {
         'grant_type': 'authorization_code',
         'code': code,
-        'redirect_uri': dify_config.OIDC_REDIRECT_URI,
+        'redirect_uri': OIDC_REDIRECT_URI,
         'client_id': OIDC_CLIENT_ID,
         'client_secret': OIDC_CLIENT_SECRET,
     }
