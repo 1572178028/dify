@@ -208,8 +208,10 @@ class AccountService:
                 if account.email and account.email == "liguoyong@corp.netease.com":
                     TenantService.create_owner_tenant_if_not_exist(account=account, is_setup=True)
                 else:
-                    # 关联默认的空间
-                    default_tenant_id = "2dc8a7ff-c64f-4d92-b119-4994fda7d1dd"
+                    # 关联默认的空间 线上空间id
+                    default_tenant_id = "ac3040f7-5737-43c8-8ca0-da83e3435c94"
+                    # 测试环境
+                    # default_tenant_id = "2dc8a7ff-c64f-4d92-b119-4994fda7d1dd"
                     tenant = db.session.query(Tenant).filter_by(id=default_tenant_id).first()
                     TenantService.create_tenant_member(tenant, account)
 
