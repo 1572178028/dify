@@ -214,8 +214,7 @@ vdb = [
 
 # 忽略提交校验
 [tool.ruff]
-ignore = ["N818", "UP031"]
-ignore = ["ALL"]
+ignore = ["N818", "UP031","ALL"]
 
 # 或者只针对你的 OIDC 相关文件
 [tool.ruff.per-file-ignores]
