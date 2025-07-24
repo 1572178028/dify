@@ -21,9 +21,6 @@ import requests
 from flask import Flask, redirect, request, session
 from jwt_compat import JWS, NoSuitableSigningKeys, SYMKey, load_jwks_from_url
 
-from libs.helper import extract_remote_ip
-from services.account_service import AccountService
-
 __revision__ = "0.01"
 __author__ = "chenxs@corp.netease.com"
 

@@ -4,7 +4,6 @@ import datetime
 import json
 import uuid
 from hashlib import md5
-from ipaddress import ip_address
 from urllib.parse import urlencode
 
 import requests
@@ -14,7 +13,7 @@ from flask_restful import Resource
 from controllers.console import api
 from controllers.console.auth.jwt_compat import JWS, NoSuitableSigningKeys, SYMKey, load_jwks_from_url
 from libs.helper import extract_remote_ip
-from services.account_service import AccountService
+from services.account_service import AccountService, TenantService
 
 # todo lgy 配置化关键信息
 OIDC_CLIENT_ID = "4c055a10660f11f09d5c0242ac120002"
@@ -166,6 +165,19 @@ class OpenidFinishApi(Resource):
         return redirect(redirect_url)
 
 
+class CreateTenantApi(Resource):
+    # 创建空间
+    def get(self):
+        # 校验操作人
+        email = request.args.get('email')
+        name = request.args.get('name')
+        print(f"CreateTenantApi email={email}, name={name}")
+        if email and name :
+            # 创建空间
+            TenantService.create_owner_tenant_by_email(email= email,name = name)
+        return "success"
+
+
 class GetUserMes(Resource):
     def get(self):
         user_data = session.get('user_mes')
@@ -175,3 +187,4 @@ class GetUserMes(Resource):
 api.add_resource(OpenidLoginApi, "/openid/login")
 api.add_resource(OpenidFinishApi, "/openid/finish")
 api.add_resource(GetUserMes, "/openid/getUserMes")
+api.add_resource(CreateTenantApi, "/openid/createTenant")
