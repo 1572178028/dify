@@ -161,7 +161,7 @@ class OpenidFinishApi(Resource):
         data = token_pair.model_dump()
         access_token = data.get('access_token')
         refresh_token = data.get('refresh_token')
-        redirect_url = f"http://{dify_config.DIFY_WEB_HOST}/signin?access_token={access_token}&refresh_token={refresh_token}"
+        redirect_url = f"{dify_config.DIFY_WEB_HOST}/signin?access_token={access_token}&refresh_token={refresh_token}"
         return redirect(redirect_url)
 
 
