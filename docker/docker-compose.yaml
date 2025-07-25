@@ -527,6 +527,23 @@ x-shared-env: &shared-api-worker-env
   QUEUE_MONITOR_THRESHOLD: ${QUEUE_MONITOR_THRESHOLD:-200}
   QUEUE_MONITOR_ALERT_EMAILS: ${QUEUE_MONITOR_ALERT_EMAILS:-}
   QUEUE_MONITOR_INTERVAL: ${QUEUE_MONITOR_INTERVAL:-30}
+  # 开启 云版
+  EDITION: ${EDITION:-CLOUD}
+  # Enable email login
+  ENABLE_EMAIL_CODE_LOGIN: ${ENABLE_EMAIL_CODE_LOGIN:-true}
+  # Enable email password login
+  ENABLE_EMAIL_PASSWORD_LOGIN: ${ENABLE_EMAIL_PASSWORD_LOGIN:-true}
+  # Enable email code login token expiry minutes
+  EMAIL_CODE_LOGIN_TOKEN_EXPIRY_MINUTES: ${EMAIL_CODE_LOGIN_TOKEN_EXPIRY_MINUTES:-5}
+  # Enable email password reset
+  ALLOW_REGISTER: ${ALLOW_REGISTER:-true}
+  # Enable email password reset token expiry minutes
+  ALLOW_CREATE_WORKSPACE: ${ALLOW_CREATE_WORKSPACE:-true}
+  # Enable logo customization
+  CAN_REPLACE_LOGO: ${CAN_REPLACE_LOGO:-true}
+  # 地址配置
+  DIFY_WEB_HOST: ${DIFY_WEB_HOST:-https://dify.miaode.com}
+  OIDC_REDIRECT_URI: ${OIDC_REDIRECT_URI:-https://dify.miaode.com/console/api/openid/finish}
 
 services:
   # API service
@@ -537,7 +554,6 @@ services:
       dockerfile: Dockerfile
     #远程拉取
 #    image: langgenius/dify-api:1.6.0
-
     restart: always
     environment:
       # Use the shared environment variables.
