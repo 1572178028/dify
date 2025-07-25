@@ -213,7 +213,7 @@ class AccountService:
                     # 测试环境
                     # default_tenant_id = "2dc8a7ff-c64f-4d92-b119-4994fda7d1dd"
                     tenant = db.session.query(Tenant).filter_by(id=default_tenant_id).first()
-                    TenantService.create_tenant_member(tenant, account)
+                    TenantService.create_tenant_member(tenant=tenant,account=account,role="editor")
 
             if not account:
                 raise AccountNotFoundError()
