@@ -549,11 +549,12 @@ services:
   # API service
   api:
     # 本地构建
-    build:
-      context: ../api
-      dockerfile: Dockerfile
+#    build:
+#      context: ../api
+#      dockerfile: Dockerfile
     #远程拉取
 #    image: langgenius/dify-api:1.6.0
+    image: liuqingyun157/dify:dify-api
     restart: always
     environment:
       # Use the shared environment variables.
@@ -583,11 +584,12 @@ services:
   # The Celery worker for processing the queue.
   worker:
     # 本地构建
-    build:
-      context: ../api
-      dockerfile: Dockerfile
+#    build:
+#      context: ../api
+#      dockerfile: Dockerfile
     # 远程
 #    image: langgenius/dify-api:1.6.0
+    image: liuqingyun157/dify:dify-api
     restart: always
     environment:
       # Use the shared environment variables.
@@ -614,11 +616,12 @@ services:
   # Frontend web application.
   web:
     #本地
-    build:
-      context: ../web
-      dockerfile: Dockerfile
+#    build:
+#      context: ../web
+#      dockerfile: Dockerfile
       #远程
 #    image: langgenius/dify-web:1.6.0
+    image: liuqingyun157/dify:dify-web
     restart: always
     environment:
       CONSOLE_API_URL: ${CONSOLE_API_URL:-}
