@@ -184,7 +184,16 @@ class GetUserMes(Resource):
         print("user_data=", user_data)
         return {"result": "success", "data": user_data}
 
+class InviteUser(Resource):
+    def get(self):
+        email = request.args.get('email')
+        tenant_id = request.args.get('tenant_id')
+        if email and tenant_id:
+            TenantService.invite_tenant_user(email=email,tenant_id=tenant_id)
+        return "success"
+
 api.add_resource(OpenidLoginApi, "/openid/login")
 api.add_resource(OpenidFinishApi, "/openid/finish")
 api.add_resource(GetUserMes, "/openid/getUserMes")
 api.add_resource(CreateTenantApi, "/openid/createTenant")
+api.add_resource(InviteUser, "/openid/inviteUser")

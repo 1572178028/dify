@@ -906,6 +906,8 @@ class TenantService:
         db.session.commit()
         tenant_was_created.send(tenant)
 
+
+
     @staticmethod
     def create_owner_tenant_by_email(
         email: str, name: Optional[str] = None):
@@ -921,6 +923,22 @@ class TenantService:
         account.current_tenant = tenant
         db.session.commit()
         tenant_was_created.send(tenant)
+
+    @staticmethod
+    def invite_tenant_user(
+        email: str, tenant_id: str):
+        """Check if user have a workspace or not"""
+
+        if not email or not tenant_id:
+            return
+        account = db.session.query(Account).filter_by(email=email).first()
+        tenant = db.session.query(Tenant).filter_by(id=tenant_id).first()
+        if account and tenant:
+            TenantService.create_tenant_member(tenant, account, role="editor")
+            account.current_tenant = tenant
+            db.session.commit()
+            tenant_was_created.send(tenant)
+
 
     @staticmethod
     def create_tenant_member(tenant: Tenant, account: Account, role: str = "normal") -> TenantAccountJoin:
