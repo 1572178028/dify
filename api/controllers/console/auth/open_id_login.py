@@ -17,8 +17,8 @@ from libs.helper import extract_remote_ip
 from services.account_service import AccountService, TenantService
 
 # todo lgy 配置化关键信息
-OIDC_CLIENT_ID = ""
-OIDC_CLIENT_SECRET = ""
+OIDC_CLIENT_ID = dify_config.OIDC_CLIENT_ID
+OIDC_CLIENT_SECRET = dify_config.OIDC_CLIENT_SECRET
 OIDC_PROVIDER = "https://login.netease.com/connect"
 OIDC_AUTHORIZATION_SERVER = "https://login.netease.com/connect/authorize"
 OIDC_TOKEN_ENDPOINT = "https://login.netease.com/connect/token"

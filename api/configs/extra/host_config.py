@@ -20,4 +20,13 @@ class HostConfig(BaseSettings):
         default="localhost",
     )
 
+    OIDC_CLIENT_ID: Optional[str] = Field(
+        description="oidc",
+        default="localhost",
+    )
+    OIDC_CLIENT_SECRET: Optional[str] = Field(
+        description="oidc",
+        default="localhost",
+    )
+
 
