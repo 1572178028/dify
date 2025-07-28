@@ -24,8 +24,8 @@ from jwt_compat import JWS, NoSuitableSigningKeys, SYMKey, load_jwks_from_url
 __revision__ = "0.01"
 __author__ = "chenxs@corp.netease.com"
 
-OIDC_CLIENT_ID = "4c055a10660f11f09d5c0242ac120002"
-OIDC_CLIENT_SECRET = "81ee34b5665f4157b965de7b2c6501624c055d30660f11f09d5c0242ac120002"
+OIDC_CLIENT_ID = ""
+OIDC_CLIENT_SECRET = ""
 OIDC_PROVIDER = "https://login.netease.com/connect"
 OIDC_AUTHORIZATION_SERVER = "https://login.netease.com/connect/authorize"
 OIDC_TOKEN_ENDPOINT = "https://login.netease.com/connect/token"
