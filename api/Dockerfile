@@ -65,15 +65,18 @@ ENV VIRTUAL_ENV=/app/api/.venv
 COPY --from=packages ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 ENV PATH="${VIRTUAL_ENV}/bin:${PATH}"
 
+# Copy source code
+COPY . /app/api/
+
 # Download nltk data
-RUN python -c "import nltk; nltk.download('punkt'); nltk.download('averaged_perceptron_tagger')"
+#RUN python -c "import nltk; nltk.download('punkt', download_dir='./nltk_data'); nltk.download('averaged_perceptron_tagger',download_dir='./nltk_data')"
+ENV NLTK_DATA=/app/api/nltk_data
 
 ENV TIKTOKEN_CACHE_DIR=/app/api/.tiktoken_cache
 
 RUN python -c "import tiktoken; tiktoken.encoding_for_model('gpt2')"
 
-# Copy source code
-COPY . /app/api/
+
 
 # Copy entrypoint
 COPY docker/entrypoint.sh /entrypoint.sh
