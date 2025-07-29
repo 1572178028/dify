@@ -475,10 +475,12 @@ const translation = {
         options: {
           disabled: {
             subTitle: 'No habilitar el filtrado de metadatos',
+            title: 'Deshabilitado',
           },
           automatic: {
             subTitle: 'Generar automáticamente condiciones de filtrado de metadatos basadas en la consulta del usuario',
             desc: 'Generar automáticamente condiciones de filtrado de metadatos basadas en la variable de consulta',
+            title: 'Automático',
           },
           manual: {
             title: 'Manual',
@@ -495,6 +497,7 @@ const translation = {
           search: 'Buscar metadatos',
         },
         title: 'Filtrado de Metadatos',
+        tip: 'El filtrado de metadatos es el proceso de utilizar atributos de metadatos (como etiquetas, categorías o permisos de acceso) para refinar y controlar la recuperación de información relevante dentro de un sistema.',
       },
     },
     http: {
@@ -898,6 +901,7 @@ const translation = {
       error_other: '{{count}} Errores',
       loopVariables: 'Variables de bucle',
       variableName: 'Nombre de Variable',
+      input: 'Entrada',
     },
   },
   tracing: {
@@ -916,6 +920,7 @@ const translation = {
       onlyShowNamedVersions: 'Solo muestra versiones nombradas',
       empty: 'No se encontró un historial de versiones coincidente.',
       reset: 'Restablecer filtro',
+      all: 'Todo',
     },
     editField: {
       titleLengthLimit: 'El título no puede exceder {{limit}} caracteres',
@@ -939,6 +944,7 @@ const translation = {
     deletionTip: 'La eliminación es irreversible, por favor confirma.',
     currentDraft: 'Borrador Actual',
     editVersionInfo: 'Editar información de la versión',
+    latest: 'Último',
   },
   debug: {
     noData: {
@@ -951,6 +957,7 @@ const translation = {
         stop: 'Detén la carrera',
         normal: 'Inspeccionar Variable',
         cached: 'Ver variables en caché',
+        clear: 'Claro',
       },
       envNode: 'Medio ambiente',
       chatNode: 'Conversación',
@@ -963,6 +970,7 @@ const translation = {
       resetConversationVar: 'Restablecer la variable de conversación al valor predeterminado',
       clearNode: 'Limpiar variable en caché',
       emptyTip: 'Después de recorrer un nodo en el lienzo o ejecutar un nodo paso a paso, puedes ver el valor actual de la variable del nodo en Inspección de Variables.',
+      edited: 'Editado',
     },
     lastRunTab: 'Última ejecución',
     settingsTab: 'Ajustes',

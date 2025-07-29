@@ -497,6 +497,7 @@ const translation = {
           automatic: {
             subTitle: 'Genera automaticamente condizioni di filtraggio dei metadati in base alla query dell\'utente',
             desc: 'Genera automaticamente condizioni di filtraggio dei metadati basate sulla variabile di query',
+            title: 'Automatico',
           },
           manual: {
             title: 'Manuale',
@@ -513,6 +514,7 @@ const translation = {
           search: 'Cerca metadati',
         },
         title: 'Filtraggio dei metadati',
+        tip: 'Il filtraggio dei metadati è il processo di utilizzo degli attributi dei metadati (come tag, categorie o permessi di accesso) per affinare e controllare il recupero di informazioni pertinenti all\'interno di un sistema.',
       },
     },
     http: {
@@ -611,6 +613,7 @@ const translation = {
         'exists': 'Esiste',
         'not exists': 'non esiste',
         'after': 'dopo',
+        'before': 'prima',
       },
       enterValue: 'Inserisci valore',
       addCondition: 'Aggiungi Condizione',
