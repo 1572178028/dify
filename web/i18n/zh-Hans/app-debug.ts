@@ -163,7 +163,7 @@ const translation = {
     moderation: {
       title: '内容审查',
       description: '您可以调用审查 API 或者维护敏感词库来使模型更安全地输出。',
-      contentEnableLabel: '启用审查内容',
+      contentEnableLabel: '内容审查已启用',
       allEnabled: '输入内容和输出内容',
       inputEnabled: '输入内容',
       outputEnabled: '输出内容',
@@ -254,7 +254,6 @@ const translation = {
     noDataLine1: '在左侧描述您的用例，',
     noDataLine2: '编排预览将在此处显示。',
     apply: '应用',
-    noData: '在左侧描述您的用例，编排预览将在此处显示。',
     loading: '为您编排应用程序中…',
     overwriteTitle: '覆盖现有配置？',
     overwriteMessage: '应用此提示将覆盖现有配置。',
